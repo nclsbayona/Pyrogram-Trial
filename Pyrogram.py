@@ -1,9 +1,9 @@
 from pyrogram import Client
 from os import name, system
-from pyrogram.types.messages_and_media import message
 from pyrogram.handlers import *
+from pyrogram.filters import *
 from random import choice as random_choice
-
+from pyrogram.types.messages_and_media.message import Message
 
 class MyClient:
     __slots__ = ["app", "file_name"]
@@ -64,6 +64,10 @@ class MyClient:
         else:
             self.app = Client(session_name=session_name,
                               api_id=id, api_hash=hash)
+
+        @self.app.on_message(text & private)
+        def print_msg(client: Client, message: Message):
+                print (f"{client} received an update of {message}")
 
     def main(self):
             #self.app.run()
@@ -131,18 +135,17 @@ class MyClient:
                             else:
                                 raise TypeError
 
-                    elif (choice == "3"):
-                            """Add Message Handler"""
-                            try:
-                                function=input("Function? ")
-                                function=exec(function)
+                    """elif (choice == "3"):
+                            #Add Message Handler
+                        try:
+                                function=print_msg
                             except:
                                 pass
                             if (self.add_message_handler(function=function)):
                                 print("Successfully added function '{}'".format(function))
                             else:
                                 raise TypeError
-
+                    """
                 except:
                     print ("Try again")
 
