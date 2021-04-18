@@ -136,6 +136,7 @@ def main(file_name, handlers: List[Tuple[Handler]]):
                         raise TypeError
 
                 elif (choice == "3"):
+                    """Print dialogs"""
                     try:
                         print_iter_dialogs()
                     except:
@@ -148,13 +149,18 @@ def main(file_name, handlers: List[Tuple[Handler]]):
 
 
 def print_members(chat_id):
-    print("Members")
-
-    for member in (__app.iter_chat_members(chat_id)):
-        print("\t"+type(member))
-
-    print()
-
+    id_type=type(chat_id)
+    print("Members of {chat_id} --> id in format: {id_type}".format(**locals()))
+    try:
+        member_list=__app.iter_chat_members(chat_id)
+        for member in (member_list):
+            member_dictionary=member.__dict__
+            single_member=member_dictionary["user"].__dict__
+            single_member_type=member_dictionary["status"]
+            print("\tID: {id} --> {first_name} {last_name} - username @{username} -- {0}".format(single_member_type, **single_member))
+        input()
+    except:
+        print("F")
 
 def print_iter_dialogs():
 
@@ -164,6 +170,7 @@ def print_iter_dialogs():
         print("This is {chat.type} ID: {chat.id}".format(
             **dialog.__dict__), end=' ')
         if(chat_type.__contains__("grupo") or chat_type.__contains__("group")):
+
             # Grupo
 
             print("title: {chat.title}, unread_messages {unread_messages_count}".format(
